@@ -41,6 +41,9 @@ Student ID: \studentid}
 \newcommand{\cc}{\text{c.c.}}
 \newcommand{\floor}{\operatorname{floor}}
 \newcommand{\floor}{\operatorname{floor}}
+\newcommand{\Re}{\operatorname{Re}}
+\newcommand{\Im}{\operatorname{Im}}
+
 
 \section{13.1 Reciprocal Lattice}
 
@@ -208,10 +211,30 @@ For $\mathbf k=(k_x, k_y, k_z)\in\mathbb R^3$ and $\mathbf k'\in\mathrm{BZ}_1$, 
 Let $\mathbf k=(k_x, k_y, k_z)\in\mathbb R^3$, then $\mathbf k'=(f(k_x), f(k_y), f(k_z))\in\mathrm{BZ}_1$ , and they are equivalent since $\mathbf k=\mathbf k'+\mathbf G$ where $\mathbf G=(2\pi/a)(\floor((a/2\pi) k_x + 1/2), \floor((a/2\pi) k_y + 1/2), \floor((a/2\pi) k_z + 1/2))\in \mathcal L_{\text{cubic}}^*(a)$
 
 (b) Let $\mathcal L_{\text{tri}}(a)=\{n_1\mathbf a_1+n_2\mathbf a_2:n_1, n_2\in\mathbb Z\}$, where $\mathbf a_1=a\mathbf e_1$ and $\mathbf a_2=\frac{a}{2}\mathbf e_1+\frac{\sqrt{3}a}{2}\mathbf e_2$. The reciprocal lattice is $\mathcal L_{\text{tri}}(a)=\{n_1\mathbf a_1^*+n_2\mathbf a_2^*:n_1, n_2\in\mathbb Z\}$, where $\mathbf a_1^*=\frac{2\pi}{a}\mathbf e_1-\frac{2\pi}{a\sqrt{3}}\mathbf e_2$ and $\mathbf a^*_2=\frac{4\pi}{a\sqrt{3}}\mathbf e_2$. Let $\mathbf a_3^*=\mathbf a_1^*+\mathbf a_2^*$. Then, the first Brillouin zone is the hexagon
+\begin{align}
+    \mathrm{BZ}_1
+    &=\left\{\mathbf k\in\mathbb R^2:\frac{\mathbf a_{j}^*\cdot \mathbf k}{\|\mathbf a_j^*\|}\le\frac{\|\mathbf a_j^*\|}{2}, j=1,2,3\right\}\label{eqn:bz1}
+\end{align}
+Let's construct the mapping  $\mathbf k\mapsto \mathbf k'$. Define a function $f:\mathbb R\rightarrow [-1/2, 1/2)$ as
 \begin{equation}
-    \mathrm{BZ}_1=\left\{\mathbf k\in\mathbb R^2:\frac{\mathbf a_{j}^*\cdot \mathbf k}{\|\mathbf a_j^*\|}\le\frac{\|a_j^*\|}{2}, j=1,2,3\right\}
+    f(x)=x-\floor\left(x+\frac{1}{2}\right)
 \end{equation}
-
+Then, the map 
+\begin{equation}
+    \mathbf k\mapsto \phi(\mathbf k)=f\left(\frac{\mathbf k\cdot\mathbf a_1}{2\pi}\right)\mathbf a_1^*+ f\left(\frac{\mathbf k\cdot\mathbf a_2}{2\pi}\right)\mathbf a_2^*
+\end{equation}
+maps to a Brillouin zone. But is not the first Brillouin zone. Hence, modify it a bit by the map $\rho$ so that $\rho(\phi(\mathbf k))\in\mathrm{BZ}_1$ which defined by
+\begin{equation}
+    \rho(\mathbf k)=\begin{cases}
+        \mathbf k & \text{if $\mathbf k\in\mathrm{BZ}_1$}\\
+        \mathbf k+\mathbf a_1^* &\text{if $k_x+k_y<0$ and $k_y>0$ and  $\mathbf k\notin\mathrm{BZ}_1$} \\
+        \mathbf k-\mathbf a_1^* &\text{if $k_x+k_y>0$ and $k_y<0$ and  $\mathbf k\notin\mathrm{BZ}_1$}  \\
+        \mathbf k+\mathbf a_2^* &\text{if $k_x+k_y<0$ and $k_y<0$ and  $\mathbf k\notin\mathrm{BZ}_1$}  \\
+        \mathbf k-\mathbf a_2^* &\text{if $k_x+k_y>0$ and $k_y>0$ and  $\mathbf k\notin\mathrm{BZ}_1$}  \\
+    \end{cases}
+\end{equation}
+The condition whether $\mathbf k\in \mathrm{BZ}_1$ or not can be easily tested by the condition shown in the Equation.~\ref{eqn:bz1}
+. The composition $\rho\circ\phi$ maps an arbitrary $\mathbf k\in\mathbb R^2$ to its equivalent $\mathbf k'\in\mathrm{BZ}_1$.
 
 
 
@@ -254,43 +277,95 @@ Then the structure factor is
 \begin{equation}
     S_{hkl}=(f_{\mathrm{Na}} + f_{\mathrm{H}}e^{\pi i(h+k+l)})(1+e^{i\pi(h+k)}+e^{i\pi(k+l)}+e^{i\pi(l+h)})\\
 \end{equation}
-\begin{align}
-    S_{111}&=4(f_{\mathrm{Na}} - f_{\mathrm{H}})\\
-    S_{200}&=4(f_{\mathrm{Na}} + f_{\mathrm{H}})\\
-\end{align}
-since $f_\mathrm H <0< f_{\mathrm{Na}}$, $|S_{200}|<|S_{111}|$ in this case. Since $\Gamma\propto |S|^2$, the calculated structure factor is consistent with the experimental result.
+\begin{gather}
+    S_{111}=4(f_{\mathrm{Na}} - f_{\mathrm{H}})\\
+    S_{200}=4(f_{\mathrm{Na}} + f_{\mathrm{H}})\\
+    \frac{8|S_{111}|^2}{6|S_{200}|^2} \approx\frac{8}{6}\left|\frac{0.374 + 0.363}{0.374 - 0.363}\right|^2\approx 5.985\times 10^3
+\end{gather}
+Since $\Gamma\propto (\text{multiplicity})|S|^2$, the calculated structure factor is consistent with the experimental result.
 
 
 (ii) for the zinc blend structure, ($\mathbf y=[1/4, 1/4, 1/4]$):
 \begin{equation}
     S_{hkl}=(f_{\mathrm{Na}} + f_{\mathrm{H}}e^{\pi i(h+k+l)/2})(1+e^{i\pi(h+k)}+e^{i\pi(k+l)}+e^{i\pi(l+h)})\\
 \end{equation}
-\begin{align}
-    S_{111}&=4(f_{\mathrm{Na}} -i f_{\mathrm{H}})\\
-    S_{200}&=4(f_{\mathrm{Na}} - f_{\mathrm{H}})\\
-\end{align}
+\begin{gather}
+    S_{111}=4(f_{\mathrm{Na}} -i f_{\mathrm{H}})\\
+    S_{200}=4(f_{\mathrm{Na}} - f_{\mathrm{H}})\\
+    \frac{8|S_{111}|^2}{6|S_{200}|^2} \approx\frac{8}{6}\frac{0.374^2 + 0.363^2}{|0.374 + 0.363|^2}\approx 0.667
+\end{gather}
+Hence, the peak indexed as (200) must be higher. Based on the experimental result, the sample is not the $\mathrm{ZnS}$ structure.  
 
-Since $|S_{200}|=4|f_{\mathrm{Na}} - f_{\mathrm{H}}|=4(|f_{\mathrm{Na}}|+|f_{\mathrm{H}}|)>4\sqrt{f_{\mathrm{Na}}^2 + f_{\mathrm{H}}^2}=|S_{111}|$, the peak indexed as (200) must be higher. Based on the experimental result, the sample is not the ZnS structure.  
+(b)
+To filter a certain momentum state, we can use a velocity selector shown in the Figure.~\ref{fig:velocity-selector}.  Using the angular velocity that corresponds to the velocity that we want, we can filter the desired velocity from a non-monochromatic neutron source.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{HW3/velocity-selector.png}
+    \caption{Velocity selector}
+    \label{fig:velocity-selector}
+\end{figure}
 
 
+The key difference between X-ray scattering and neutron scattering is what it couples to. X-ray photons couple with electrons through electromagnetic interaction, while neutrons couple with nuclei through the nuclear force. Therefore, light elements such as hydrogen have fewer electrons, making them difficult to experiment with using X-rays while neutron scattering is effective for hydrogen atoms. Moreover, since neutrons interact directly with atomic nuclei, a mixture of different isotopes will give different results.
 
-
+Since the relation between the energy and the momentum of a X-ray photon coupled with the speed of light, which is the very large constant, $E=pc$, it is hard to couple with a phonon which has the dispersion relation $E=\hbar\omega(k)=2\omega_0|\sin(ka/2)|$, because it is hard to conserve both the momentum and the energy. However, since the relation between the momentum and the kinetic energy of the neutron is $T=\frac{p^2}{2m}$, it is much easier to couple with phonons.
 
 
 \section{14.9 Form Factors}
 
+(a)
+Start from the definition of the structure factor:
+\begin{align}
+    S(\mathbf G)
+    &=\int_{\text{unit cell}} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V(\mathbf x) \\
+    &=\sum_{\alpha}\sum_{\mathbf R}\int_{\text{unit cell}} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_\alpha(\mathbf x - \mathbf R-\mathbf y_\alpha) \\
+    &=\sum_{\alpha}\sum_{\mathbf R}\int_{\text{unit cell}} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}e^{-i\mathbf G\cdot\mathbf R}V_\alpha(\mathbf x - \mathbf R-\mathbf y_\alpha) \\
+    &=\sum_{\alpha}\sum_{\mathbf R}\int_{\text{unit cell}} d\mathbf x\, e^{i\mathbf G\cdot(\mathbf x-\mathbf R)}V_\alpha(\mathbf x - \mathbf R-\mathbf y_\alpha) \\
+    &=\sum_{\alpha}\int_{\mathbb R^3} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_\alpha(\mathbf x-\mathbf y_\alpha) \\
+    &=\sum_{\alpha}\int_{\mathbb R^3-\mathbf y_\alpha} d(\mathbf x+\mathbf y_\alpha)\, e^{i\mathbf G\cdot(\mathbf x+\mathbf y_\alpha)}V_\alpha(\mathbf x) \\
+    &=\sum_{\alpha}e^{i\mathbf G\cdot\mathbf y_\alpha}\int_{\mathbb R^3} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_\alpha(\mathbf x) 
+\end{align}
+by replacing the notation of the index $\alpha\rightarrow j$, and the positions of the atoms in a unit cell $\mathbf y_\alpha\rightarrow \mathbf x_j$, 
+\begin{equation}
+    S(\mathbf G)=\sum_{j}e^{i\mathbf G\cdot\mathbf x_j}\int_{\mathbb R^3} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_j(\mathbf x) 
+\end{equation}
+Hence, the form factor is
+\begin{equation}
+    f_j(\mathbf G)=\int_{\mathbb R^3} d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_j(\mathbf x) 
+\end{equation}
+(b) 
+\begin{align}
+    f_j(\mathbf G)
+    &=\int_{|\mathbf x| \le r_0^{(j)}}d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V_0^{(j)}\\
+    &=V_0^{(j)}\int_{0}^{2\pi}d\phi\int_{0}^{r_0^{(j)}}r^2\,dr\int_{-1}^{1} \,d(\cos\theta)\, e^{i\|\mathbf G\|r\cos\theta}\\
+    &=2\pi V_0^{(j)}\int_{0}^{r_0^{(j)}}r^2\,dr\frac{e^{i\|\mathbf G\|r}-e^{-i\|\mathbf G\|r}}{i\|\mathbf G\|r}\\
+    &=2\pi V_0^{(j)}\frac{2}{\|\mathbf G\|}\int_{0}^{r_0^{(j)}}r\sin(\|\mathbf G\| r)\,dr\\
+    &=2\pi V_0^{(j)}\frac{2}{\|\mathbf G\|}\int_{0}^{r_0^{(j)}}r\sin(\|\mathbf G\| r)\,dr\\
+    &=4\pi  V_0^{(j)}\frac{\sin(\|\mathbf G\| r_0^{(j)})-\|\mathbf G\| r_0^{(j)}\cos(\|\mathbf G\| r_0^{(j)})}{\|\mathbf G\|^3}
+\end{align}
+The polar angle $\theta$ is chosen by the angle between $\mathbf G$ and $\mathbf x$. Let $x=\|\mathbf G\|r_0^{(j)}$
+ and set $\frac{4}{3}\pi {r_0^{(j)}}^3 V_0^{(j)}=Z_{j}$ , which means $(\text{volume})\times(\text{energy})$,
+\begin{equation}
+    f_j(\mathbf G) = 3Z_j\frac{\sin x-x\cos x}{x^3}
+\end{equation}
 
-
-
-
-
-
-
-
-
-
-
-
+(c) X-ray fills the charge density $e|\psi|^2$ as a potential. Hence, let $V(\mathbf r)=C|\psi(\mathbf r)|^2$. The wavefunction of $1s$ orbital is
+\begin{equation}
+    \psi_{1s}(r)=\frac{1}{\sqrt{\pi}a_0^{3/2}}e^{-r/a_0}
+\end{equation}
+Where $a_0$ is the Bohr radius. hence the effective potential can be written by:
+\begin{equation}
+    V(r)=V_0e^{-2r/a_0}
+\end{equation}
+The form factor is
+\begin{align}
+    f_j(\mathbf G) 
+    &= \int d\mathbf x\, e^{i\mathbf G\cdot\mathbf x}V(\|\mathbf x\|) \\
+    &=V_0\int_0^{2\pi} d\phi\int_0^\infty r^2\, dr\int_{-1}^{1} d(\cos\theta) e^{i\|\mathbf G\|r\cos\theta}e^{-2r/a_0}\\
+    &=\frac{4\pi V_0}{\|\mathbf G\|}\int_0^\infty r\sin(\|\mathbf G\|r) e^{-2r/a_0}\, dr\\
+    &= \frac{16\pi V_0 a_0^3}{(4 + a_0^2\|\mathbf G\|^2)^2}
+\end{align}
+Hence, the form factor is proportional to $\frac{1}{(4 + a_0^2\|\mathbf G\|^2)^2}$
 
 
 
